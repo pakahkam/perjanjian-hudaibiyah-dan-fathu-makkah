@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perjanjian Hudaibiyah & Fathu Makkah Estetik</title>
+    <!-- Memuat Tailwind CSS untuk tampilan modern dan responsif --><script src="https://cdn.tailwindcss.com"></script>
+    <!-- Menggunakan font Inter --><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <!-- Menggunakan Lucide Icons (sebagai pengganti Font Awesome/SVG) --><script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        /* Mengatur font global dan latar belakang lebih cerah menjadi putih */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #ffffff; /* Putih bersih */
+        }
+        /* Styling untuk tombol menu yang aktif - Pink Lavender */
+        .menu-item.active {
+            background-color: #c4b5fd; /* Pink Lavender */
+            color: #312e81; /* Teks Ungu Tua */
+            box-shadow: 0 6px 20px rgba(196, 181, 253, 0.6);
+            transform: scale(1.05);
+            font-weight: 700;
+        }
+        /* Styling untuk card materi */
+        .content-card {
+            min-height: 400px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08); /* Sedikit lebih ringan bayangannya */
+            border-radius: 2rem; /* Sudut lebih membulat dan modern */
+        }
+        /* Animasi ringkas untuk elemen yang muncul */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in {
+            animation: fadeIn 0.6s ease-out;
+        }
+        /* Warna-warni untuk Level Kuis (Lebih Pastel) */
+        .level-easy { background-color: #93c5fd; } /* Biru Langit Pastel */
+        .level-medium { background-color: #fcd34d; } /* Kuning Cerah */
+        .level-hard { background-color: #fca5a5; } /* Merah Muda Soft */
+        .level-text-easy { color: #1e40af; }
+        .level-text-medium { color: #b45309; }
+        .level-text-hard { color: #991b1b; }
+
+        /* Style untuk tombol jawaban kuis */
+        .quiz-option {
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+        .quiz-option:hover:not(.selected) {
+            background-color: #ecfdf5; /* Mint muda saat hover */
+        }
+        .selected {
+            border: 3px solid #f97316; /* Oranye saat dipilih */
+            background-color: #fff7ed;
+        }
+        /* Warna Koreksi Kuis (Tetap Jelas) */
+        .correct {
+            background-color: #6ee7b7 !important; /* Hijau Mint saat benar */
+            color: #166534 !important;
+            border-color: #34d399 !important;
+            font-weight: 600;
+        }
+        .incorrect {
+            background-color: #f87171 !important; /* Merah Muda saat salah */
+            color: white !important;
+            border-color: #ef4444 !important;
+        }
+        /* Style untuk modal (Kotak Pesan Kustom) */
+        .modal-overlay {
+            background-color: rgba(0, 0, 0, 0.4); /* Opasitas sedikit diturunkan */
+        }
+        .modal-content {
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15); /* Bayangan sedikit lebih ringan */
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+    <!-- Header Aplikasi --><header class="text-center mb-8">
+        <h1 class="text-4xl font-extrabold text-gray-800 tracking-tight">
+            <span class="text-purple-500">Petualangan Sejarah</span> Nabi Muhammad
+        </h1>
+        <p class="text-lg text-gray-500 mt-2">Perjanjian Hudaibiyah & Fathu Makkah</p>
+    </header>
+
+    <!-- Menu Navigasi --><nav class="flex justify-center mb-10">
+        <div class="bg-white p-2 rounded-full shadow-2xl flex space-x-2 border border-gray-100">
+            <button id="menu-materi" onclick="changeMenu('materi')" class="menu-item active py-2 px-6 rounded-full text-sm font-semibold transition duration-300 flex items-center">
+                <i data-lucide="book-open-text" class="w-5 h-5 mr-2"></i> Materi Inti
+            </button>
+            <button id="menu-langkah" onclick="changeMenu('langkah')" class="menu-item py-2 px-6 rounded-full text-sm font-semibold text-gray-700 hover:bg-purple-50 transition duration-300 flex items-center">
+                <i data-lucide="list-ordered" class="w-5 h-5 mr-2"></i> Langkah Mahir
+            </button>
+            <button id="menu-kuis" onclick="changeMenu('kuis')" class="menu-item py-2 px-6 rounded-full text-sm font-semibold text-gray-700 hover:bg-purple-50 transition duration-300 flex items-center">
+                <i data-lucide="brain-circuit" class="w-5 h-5 mr-2"></i> Tantangan Kuis
+            </button>
+        </div>
+    </nav>
+
+    <!-- Konten Utama (Akan diisi oleh JavaScript) --><main id="content-container" class="content-card bg-white p-6 md:p-10 shadow-xl mx-auto max-w-4xl animate-fade-in">
+        <!-- Konten awal akan dimuat di sini oleh JS --></main>
+
+    <!-- Modal (Kotak Pesan Kustom) --><div id="custom-modal" class="fixed inset-0 bg-black bg-opacity-40 z-50 flex items-center justify-center hidden modal-overlay">
+        <div class="bg-white p-6 md:p-8 rounded-xl max-w-sm w-full modal-content transform transition-all duration-300 scale-95">
+            <h3 id="modal-title" class="text-xl font-bold mb-3 text-center text-purple-600">Judul Pesan</h3>
+            <p id="modal-message" class="text-gray-700 mb-6 text-center">Isi pesan di sini.</p>
+            <button onclick="closeModal()" class="w-full bg-purple-500 hover:bg-purple-600 text-white font-semibold py-2 rounded-lg transition duration-300">Oke, Mengerti!</button>
+        </div>
+    </div>
+
+    <script>
+        // Data Kuis (Total 15 soal)
+        const quizData = [
+            // Level Mudah (Easy - 5 Soal)
+            { question: "Apa tujuan utama kaum Muslimin ke Makkah saat terjadinya peristiwa Hudaibiyah?", options: ["Berperang", "Berdagang", "Melaksanakan Umrah", "Berhijrah"], answer: "Melaksanakan Umrah", level: "Mudah" },
+            { question: "Di mana letak tempat perjanjian damai yang terkenal itu dilaksanakan?", options: ["Jeddah", "Madinah", "Hudaibiyah", "Makkah"], answer: "Hudaibiyah", level: "Mudah" },
+            { question: "Siapa perwakilan dari kaum Quraisy yang awalnya ditunjuk untuk berunding dengan Nabi Muhammad?", options: ["Abu Sufyan", "Suhail bin Amr", "Ikrimah bin Abu Jahal", "Walid bin Mughirah"], answer: "Suhail bin Amr", level: "Mudah" },
+            { question: "Salah satu poin perjanjian adalah gencatan senjata selama berapa tahun?", options: ["3 tahun", "5 tahun", "10 tahun", "20 tahun"], answer: "10 tahun", level: "Mudah" },
+            { question: "Apa nama peristiwa besar setelah Perjanjian Hudaibiyah yang menjadi kemenangan bagi Muslimin?", options: ["Perang Badar", "Perang Uhud", "Fathu Makkah", "Perang Khandaq"], answer: "Fathu Makkah", level: "Mudah" },
+
+            // Level Sedang (Medium - 5 Soal)
+            { question: "Apa nama kaum yang melanggar Perjanjian Hudaibiyah sehingga memicu Fathu Makkah?", options: ["Bani Israil", "Bani Bakr", "Bani Nadir", "Bani Quraizhah"], answer: "Bani Bakr", level: "Sedang" },
+            { question: "Siapa sahabat yang diutus Nabi Muhammad ke Makkah sebelum Perjanjian Hudaibiyah, yang sempat dikira terbunuh?", options: ["Ali bin Abi Thalib", "Umar bin Khattab", "Utsman bin Affan", "Abu Bakar As-Shiddiq"], answer: "Utsman bin Affan", level: "Sedang" },
+            { question: "Apa nama Bai'at yang dilakukan para Sahabat di bawah pohon saat kabar terbunuhnya utusan tersiar?", options: ["Bai'at Aqabah", "Bai'at Ridhwan", "Bai'at Saqifah", "Bai'at Ansar"], answer: "Bai'at Ridhwan", level: "Sedang" },
+            { question: "Berapa jumlah pasukan Muslimin yang ikut serta dalam Fathu Makkah (Penaklukan Makkah)?", options: ["1.000 orang", "3.000 orang", "7.000 orang", "10.000 orang"], answer: "10.000 orang", level: "Sedang" },
+            { question: "Perjanjian Hudaibiyah dianggap sebagai 'Kemenangan yang Nyata' oleh Allah SWT. Disebutkan dalam surah apa?", options: ["Al-Fatihah", "An-Nashr", "Al-Fath", "Al-Ikhlas"], answer: "Al-Fath", level: "Sedang" },
+
+            // Level Sulit (Hard - 5 Soal)
+            { question: "Apa syarat yang paling berat dalam Perjanjian Hudaibiyah, yang kemudian terbukti menguntungkan?", options: ["Gencatan senjata 10 tahun", "Mengembalikan Muslim Makkah ke Quraisy", "Tidak boleh Umrah tahun itu", "Bebas memilih masuk Islam/Quraisy"], answer: "Mengembalikan Muslim Makkah ke Quraisy", level: "Sulit" },
+            { question: "Siapa tokoh Quraisy yang menyatakan diri masuk Islam sebelum Fathu Makkah setelah diyakinkan oleh Abbas bin Abdul Muththalib?", options: ["Abu Jahal", "Abu Thalib", "Abu Sufyan", "Umayyah bin Khalaf"], answer: "Abu Sufyan", level: "Sulit" },
+            { question: "Apa yang dilakukan Rasulullah SAW terhadap patung-patung berhala di sekitar Ka'bah saat Fathu Makkah?", options: ["Dibiarkan", "Dihancurkan", "Diberi kain penutup", "Dipindahkan"], answer: "Dihancurkan", level: "Sulit" },
+            { question: "Kapan (Tahun Hijriah) Peristiwa Fathu Makkah terjadi?", options: ["Tahun ke-6 H", "Tahun ke-7 H", "Tahun ke-8 H", "Tahun ke-10 H"], answer: "Tahun ke-8 H", level: "Sulit" },
+            { question: "Pesan moral utama dari Fathu Makkah yang ditunjukkan Rasulullah adalah...", options: ["Pembalasan dendam", "Kekuasaan penuh", "Pengampunan dan Kasih Sayang", "Penghukuman yang adil"], answer: "Pengampunan dan Kasih Sayang", level: "Sulit" }
+        ];
+
+        let currentQuizIndex = 0;
+        let score = 0;
+        let selectedOption = null;
+
+        // --- Fungsi Utama Navigasi ---
+        function changeMenu(menu) {
+            // Hapus kelas 'active' dari semua tombol
+            document.querySelectorAll('.menu-item').forEach(btn => {
+                btn.classList.remove('active'); // Hapus kelas active dari semua
+                btn.classList.add('text-gray-700', 'hover:bg-purple-50');
+            });
+
+            // Tambahkan kelas 'active' ke tombol yang dipilih
+            const selectedButton = document.getElementById(`menu-${menu}`);
+            if (selectedButton) {
+                selectedButton.classList.add('active');
+                selectedButton.classList.remove('text-gray-700', 'hover:bg-purple-50');
+            }
+
+            // Muat konten
+            const container = document.getElementById('content-container');
+            container.classList.remove('animate-fade-in');
+            void container.offsetWidth; // Trigger reflow
+            container.classList.add('animate-fade-in');
+
+            switch (menu) {
+                case 'materi':
+                    loadMateriContent();
+                    break;
+                case 'langkah':
+                    loadLangkahContent();
+                    break;
+                case 'kuis':
+                    startQuiz();
+                    break;
+            }
+            // Muat ulang ikon Lucide setelah konten berubah
+            lucide.createIcons();
+        }
+
+        // --- Konten Materi ---
+        function loadMateriContent() {
+            document.getElementById('content-container').innerHTML = `
+                <div class="space-y-8">
+                    <!-- Judul Konten --><h2 class="text-3xl font-bold text-center text-purple-600 mb-6 border-b-2 border-purple-200 pb-3">
+                        Materi Inti: Kemenangan Penuh Makna
+                    </h2>
+
+                    <!-- Bagian Hudaibiyah (Warna Biru Langit Pastel) --><div class="p-6 bg-blue-50 border-l-4 border-blue-400 rounded-xl shadow-lg">
+                        <h3 class="text-2xl font-extrabold text-blue-700 mb-4 flex items-center">
+                            <i data-lucide="handshake" class="w-6 h-6 mr-3"></i> 1. Perjanjian Hudaibiyah (Tahun ke-6 H)
+                        </h3>
+                        <p class="text-gray-700 mb-4">
+                            Rasulullah dan ribuan sahabat ingin Umrah. Kaum Quraisy menghalangi, sehingga terjadilah perjanjian damai. Awalnya terasa berat, tapi ternyata perjanjian ini adalah **'Kemenangan Nyata'** dari Allah!
+                        </p>
+                        <ul class="list-none space-y-2 text-blue-600 font-semibold text-sm">
+                            <li class="flex items-start">
+                                <i data-lucide="check-circle" class="w-5 h-5 mr-2 mt-1 text-green-500 flex-shrink-0"></i>
+                                <span class="text-gray-700">Isi Penting: Gencatan senjata selama 10 tahun.</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i data-lucide="check-circle" class="w-5 h-5 mr-2 mt-1 text-green-500 flex-shrink-0"></i>
+                                <span class="text-gray-700">Hikmah Terbesar: Muslim bebas berdakwah dan mengajak banyak kabilah (suku) masuk Islam!</span>
+                            </li>
+                        </ul>
+                        <!-- Visualisasi Imajinasi --><div class="mt-4 p-4 bg-blue-100 rounded-xl border-2 border-blue-300">
+                            <p class="text-sm font-bold text-blue-800 flex items-center">
+                                <i data-lucide="wand-2" class="w-4 h-4 mr-2"></i> Imajinasi Hudaibiyah:
+                            </p>
+                            <p class="text-sm text-gray-700 italic">Bayangkan gencatan senjata 10 tahun itu seperti 'Masa Tenang' untuk mengisi energi. Selama masa tenang ini, Islam menyebar dengan cepat seperti air yang mengalir ke mana-mana!</p>
+                            <img src="https://placehold.co/400x150/93c5fd/ffffff?text=Pintu+Damai+Terbuka" onerror="this.onerror=null;this.src='https://placehold.co/400x150/93c5fd/ffffff?text=Pintu+Damai+Terbuka';" alt="" class="w-full h-auto mt-3 rounded-lg shadow-md">
+                        </div>
+                    </div>
+
+                    <!-- Bagian Fathu Makkah (Warna Mint Kemenangan) --><div class="p-6 bg-green-50 border-l-4 border-green-400 rounded-xl shadow-lg">
+                        <h3 class="text-2xl font-extrabold text-green-700 mb-4 flex items-center">
+                            <i data-lucide="flag-triangle-right" class="w-6 h-6 mr-3"></i> 2. Fathu Makkah (Penaklukan Makkah) (Tahun ke-8 H)
+                        </h3>
+                        <p class="text-gray-700 mb-4">
+                            Kaum Quraisy melanggar perjanjian! Rasulullah memimpin 10.000 pasukan Muslimin. Namun, Fathu Makkah bukan peperangan, melainkan **Kemenangan Tanpa Darah** yang penuh ampunan dan kasih sayang.
+                        </p>
+                        <ul class="list-none space-y-2 text-green-600 font-semibold text-sm">
+                            <li class="flex items-start">
+                                <i data-lucide="check-circle" class="w-5 h-5 mr-2 mt-1 text-purple-500 flex-shrink-0"></i>
+                                <span class="text-gray-700">Pesan Utama: Rasulullah memberikan **ampunan total** kepada semua penduduk Makkah.</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i data-lucide="check-circle" class="w-5 h-5 mr-2 mt-1 text-purple-500 flex-shrink-0"></i>
+                                <span class="text-gray-700">Tindakan Mulia: Menghancurkan 360 berhala di Ka'bah.</span>
+                            </li>
+                        </ul>
+                         <!-- Visualisasi Imajinasi --><div class="mt-4 p-4 bg-green-100 rounded-xl border-2 border-green-300">
+                            <p class="text-sm font-bold text-green-800 flex items-center">
+                                <i data-lucide="aperture" class="w-4 h-4 mr-2"></i> Imajinasi Fathu Makkah:
+                            </p>
+                            <p class="text-sm text-gray-700 italic">Bayangkan Makkah seperti benteng yang akhirnya terbuka, bukan karena dihancurkan, tapi karena kasih sayang dan ampunan. Semua berhala hancur, dan Ka'bah kembali murni sebagai rumah Allah!</p>
+                             <img src="https://placehold.co/400x150/6ee7b7/ffffff?text=Bendera+Kemenangan+Islam" onerror="this.onerror=null;this.src='https://placehold.co/400x150/6ee7b7/ffffff?text=Bendera+Kemenangan+Islam';" alt="" class="w-full h-auto mt-3 rounded-lg shadow-md">
+                        </div>
+                    </div>
+                </div>
+            `;
+            lucide.createIcons();
+        }
+
+        // --- Konten Langkah-langkah ---
+        function loadLangkahContent() {
+            document.getElementById('content-container').innerHTML = `
+                <div class="space-y-8">
+                    <h2 class="text-3xl font-bold text-center text-indigo-600 mb-6 border-b-2 border-indigo-200 pb-3">
+                        Langkah-langkah Menjadi Mahir (Visualisasi Langkah)
+                    </h2>
+
+                    <!-- Kartu Langkah 1: Pahami Konteks (Warna Hijau Ceria) --><div class="flex items-start bg-green-50 p-4 rounded-xl border border-green-300 transform hover:scale-[1.02] transition duration-300 shadow-lg">
+                        <div class="flex items-center justify-center w-10 h-10 bg-green-400 text-white font-extrabold text-xl rounded-full flex-shrink-0 mr-4 shadow-md">1</div>
+                        <div>
+                            <h3 class="text-xl font-bold text-green-700">Lihat Garis Waktu Besar (Peta Awal)</h3>
+                            <p class="text-gray-600 text-sm">Bayangkan Nabi Muhammad di Madinah, Quraisy di Makkah. Ada 'garis perang' di tengah. Hudaibiyah adalah saat garis itu menjadi 'garis damai'. Fathu Makkah adalah saat garis itu hilang total!</p>
+                        </div>
+                    </div>
+
+                    <!-- Kartu Langkah 2: Pahami Perjanjian (Warna Kuning Hangat) --><div class="flex items-start bg-yellow-50 p-4 rounded-xl border border-yellow-300 transform hover:scale-[1.02] transition duration-300 shadow-lg">
+                         <div class="flex items-center justify-center w-10 h-10 bg-yellow-400 text-white font-extrabold text-xl rounded-full flex-shrink-0 mr-4 shadow-md">2</div>
+                        <div>
+                            <h3 class="text-xl font-bold text-yellow-700">Cari 'Trik' Hudaibiyah</h3>
+                            <p class="text-gray-600 text-sm">Semua poin perjanjian yang 'rugi' (seperti harus pulang tanpa Umrah dan mengembalikan Muslim yang datang) sebenarnya adalah 'trik' tersembunyi Allah. Trik ini memberi waktu bagi Muslim untuk berdakwah bebas tanpa takut perang!</p>
+                        </div>
+                    </div>
+
+                    <!-- Kartu Langkah 3: Pahami Pelanggaran (Warna Pink Lavender) --><div class="flex items-start bg-purple-50 p-4 rounded-xl border border-purple-300 transform hover:scale-[1.02] transition duration-300 shadow-lg">
+                         <div class="flex items-center justify-center w-10 h-10 bg-purple-400 text-white font-extrabold text-xl rounded-full flex-shrink-0 mr-4 shadow-md">3</div>
+                        <div>
+                            <h3 class="text-xl font-bold text-purple-700">Mengapa 'Penaklukan' Tanpa Perang?</h3>
+                            <p class="text-gray-600 text-sm">Fathu Makkah terjadi karena ada pelanggaran (Bani Bakr menyerang Khuza'ah, teman Muslim). Pasukan 10.000 itu besar, tapi kunci suksesnya adalah **strategi rahasia** dan **rasa takut Quraisy** yang membuat mereka menyerah tanpa bertempur. Kemenangan dengan pengampunan adalah yang terbaik!</p>
+                        </div>
+                    </div>
+
+                    <!-- Kartu Langkah 4: Ambil Hikmah (Warna Merah Muda Soft) --><div class="flex items-start bg-pink-50 p-4 rounded-xl border border-pink-300 transform hover:scale-[1.02] transition duration-300 shadow-lg">
+                         <div class="flex items-center justify-center w-10 h-10 bg-pink-400 text-white font-extrabold text-xl rounded-full flex-shrink-0 mr-4 shadow-md">4</div>
+                        <div>
+                            <h3 class="text-xl font-bold text-pink-700">Pesan Moral Paling Manis</h3>
+                            <p class="text-gray-600 text-sm">Pelajaran terbesar: **Kesabaran dan Pandangan Jauh** (Hudaibiyah) selalu berujung pada **Pengampunan dan Kasih Sayang** (Fathu Makkah). Nabi Muhammad mengajarkan kita bahwa memaafkan musuh adalah kemenangan yang paling agung.</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+            lucide.createIcons();
+        }
+
+        // --- Konten Kuis ---
+
+        function startQuiz() {
+            currentQuizIndex = 0;
+            score = 0;
+            loadQuizQuestion();
+        }
+
+        function loadQuizQuestion() {
+            if (currentQuizIndex >= quizData.length) {
+                showQuizResult();
+                return;
+            }
+
+            const quizItem = quizData[currentQuizIndex];
+            selectedOption = null;
+            const levelClass = quizItem.level === "Mudah" ? 'level-easy' : quizItem.level === "Sedang" ? 'level-medium' : 'level-hard';
+            const levelTextClass = quizItem.level === "Mudah" ? 'level-text-easy' : quizItem.level === "Sedang" ? 'level-text-medium' : 'level-text-hard';
+
+            // Mengacak urutan opsi
+            const shuffledOptions = shuffleArray([...quizItem.options]);
+
+            const optionsHtml = shuffledOptions.map(option => `
+                <button onclick="selectOption(this, '${option.replace(/'/g, "\\'")}')"
+                        class="quiz-option w-full text-left p-4 bg-gray-50 text-gray-800 rounded-lg border-2 border-gray-200 transition duration-150 hover:border-purple-400">
+                    ${option}
+                </button>
+            `).join('');
+
+            document.getElementById('content-container').innerHTML = `
+                <div class="space-y-6">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-2xl font-bold text-gray-800">Tantangan Kuis PAI</h2>
+                        <div class="text-lg font-extrabold ${levelTextClass} p-2 rounded-full ${levelClass} bg-opacity-20 shadow-md">
+                            Level: ${quizItem.level}
+                        </div>
+                    </div>
+
+                    <div class="bg-purple-500 text-white p-5 rounded-xl shadow-xl">
+                        <p class="text-sm font-semibold opacity-80 mb-1">Soal ke ${currentQuizIndex + 1} dari ${quizData.length}</p>
+                        <p class="text-xl md:text-2xl font-bold">${quizItem.question}</p>
+                    </div>
+
+                    <div id="quiz-options" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        ${optionsHtml}
+                    </div>
+
+                    <div class="pt-4 flex justify-between">
+                        <button id="submit-quiz-btn" onclick="submitAnswer()"
+                                class="bg-pink-500 hover:bg-pink-600 text-white font-bold py-3 px-8 rounded-full shadow-lg transition duration-300 disabled:opacity-50"
+                                disabled>
+                            Jawab Soal! <i data-lucide="send" class="w-5 h-5 ml-2 inline-block"></i>
+                        </button>
+                    </div>
+                </div>
+            `;
+            lucide.createIcons();
+        }
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        function selectOption(button, option) {
+            // Hapus kelas selected dari semua tombol
+            document.querySelectorAll('.quiz-option').forEach(btn => {
+                btn.classList.remove('selected');
+            });
+
+            // Tambahkan kelas selected ke tombol yang diklik
+            button.classList.add('selected');
+            selectedOption = option;
+            document.getElementById('submit-quiz-btn').disabled = false;
+        }
+
+        function submitAnswer() {
+            if (!selectedOption) {
+                showModal("Perhatian!", "Silakan pilih salah satu jawaban sebelum menekan tombol 'Jawab Soal!'.");
+                return;
+            }
+
+            const currentQuestion = quizData[currentQuizIndex];
+            const isCorrect = selectedOption === currentQuestion.answer;
+            const optionsContainer = document.getElementById('quiz-options');
+            const submitBtn = document.getElementById('submit-quiz-btn');
+
+            // Nonaktifkan tombol dan opsi lain
+            submitBtn.disabled = true;
+            document.querySelectorAll('.quiz-option').forEach(btn => btn.disabled = true);
+
+            // Beri warna pada jawaban yang dipilih dan jawaban yang benar
+            optionsContainer.querySelectorAll('button').forEach(btn => {
+                const btnText = btn.textContent.trim();
+
+                if (btnText === currentQuestion.answer) {
+                    btn.classList.add('correct');
+                    btn.classList.remove('selected', 'bg-gray-50', 'text-gray-800');
+                } else if (btnText === selectedOption && !isCorrect) {
+                    btn.classList.add('incorrect');
+                    btn.classList.remove('selected', 'bg-gray-50', 'text-gray-800');
+                }
+            });
+
+            if (isCorrect) {
+                score++;
+                showModal("Horeee, Hebat!", `Jawaban kamu BENAR! Poinmu sekarang: ${score}`);
+            } else {
+                showModal("Aduh, Kurang Tepat!", `Jawaban yang benar adalah: **${currentQuestion.answer}**. Jangan khawatir, coba lagi di soal berikutnya!`);
+            }
+
+            // Tambahkan tombol Lanjut
+            const nextButtonHtml = `
+                <button onclick="nextQuiz()"
+                        class="bg-purple-500 hover:bg-purple-600 text-white font-bold py-3 px-8 rounded-full shadow-lg transition duration-300 ml-auto">
+                    Soal Selanjutnya <i data-lucide="arrow-right" class="w-5 h-5 ml-2 inline-block"></i>
+                </button>
+            `;
+            // Ganti tombol submit dengan tombol lanjut setelah delay singkat
+            setTimeout(() => {
+                document.querySelector('.pt-4.flex').innerHTML = nextButtonHtml;
+                lucide.createIcons();
+            }, 1000); // Tunda sebentar agar siswa melihat hasilnya
+        }
+
+        function nextQuiz() {
+            currentQuizIndex++;
+            loadQuizQuestion();
+        }
+
+        function showQuizResult() {
+            const percentage = ((score / quizData.length) * 100).toFixed(0);
+            let message = "";
+            let emoji = "";
+            let color = "";
+
+            if (percentage >= 80) {
+                message = "Selamat! Kamu PINTAR sekali! Pertahankan semangat belajar PAI-mu!";
+                emoji = "🚀";
+                color = "text-green-600";
+            } else if (percentage >= 50) {
+                message = "Bagus! Kamu sudah menguasai sebagian besar materi. Sedikit lagi, kamu pasti MAKSIMAL!";
+                emoji = "👍";
+                color = "text-yellow-600";
+            } else {
+                message = "Terus semangat! Jangan patah semangat, mari kita ulangi materi 'Langkah Mahir' agar kamu lebih yakin!";
+                emoji = "💪";
+                color = "text-red-600";
+            }
+
+            document.getElementById('content-container').innerHTML = `
+                <div class="text-center p-8 bg-white rounded-xl shadow-2xl space-y-6">
+                    <div class="text-6xl">${emoji}</div>
+                    <h2 class="text-4xl font-extrabold ${color}">Hasil Kuis Selesai!</h2>
+                    <p class="text-gray-600 text-xl font-semibold">Skor Akhir Kamu:</p>
+                    <div class="text-8xl font-black text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-pink-500">
+                        ${score} / ${quizData.length}
+                    </div>
+                    <p class="text-2xl font-bold text-gray-800">Persentase: ${percentage}%</p>
+                    <p class="text-lg text-gray-700 mt-4">${message}</p>
+                    <button onclick="changeMenu('materi')" class="bg-purple-500 hover:bg-purple-600 text-white font-bold py-3 px-6 rounded-full transition duration-300">
+                        <i data-lucide="refresh-cw" class="w-5 h-5 mr-2 inline-block"></i> Ulangi Kuis / Review Materi
+                    </button>
+                </div>
+            `;
+            lucide.createIcons();
+        }
+
+        // --- Fungsi Modal Kustom ---
+        function showModal(title, message) {
+            document.getElementById('modal-title').innerHTML = title;
+            document.getElementById('modal-message').innerHTML = message;
+            const modal = document.getElementById('custom-modal');
+            modal.classList.remove('hidden');
+            // Reset scale for animation
+            document.querySelector('.modal-content').classList.remove('scale-100');
+            document.querySelector('.modal-content').classList.add('scale-95');
+
+            setTimeout(() => {
+                document.querySelector('.modal-content').classList.remove('scale-95');
+                document.querySelector('.modal-content').classList.add('scale-100');
+            }, 10);
+        }
+
+        function closeModal() {
+            document.getElementById('custom-modal').classList.add('hidden');
+        }
+
+        // --- Inisialisasi Aplikasi ---
+        window.onload = function() {
+            changeMenu('materi'); // Muat konten 'Materi' saat pertama kali dibuka
+        }
+    </script>
+</body>
+</html>
